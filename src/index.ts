@@ -4,27 +4,28 @@ import * as path from 'path'
 import fs from 'fs';
 
 export default (ctx: IPluginContext) => {
-  const {paths, helper, runOpts} = ctx
+  const {paths, platforms, helper, runOpts} = ctx
   const {appPath, outputPath, sourcePath, configPath} = paths
   // const appConfigFilePath = resolveScriptPath(path.join(sourcePath, `${helper.ENTRY}.config`))
   // const appConfig = helper.readConfig(appConfigFilePath)
-  ctx.modifyWebpackChain((args) => {
-    const chain = args.chain;
-    // console.log('=======before modify===========', chain.toConfig());
-    modifyEntry(chain);
-    // modifyMode(chain);
-    modifyOutput(chain)
-    modifyPerformance(chain)
-    modifyPlugins(chain);
-    removeResolve(chain);
-    modifyModule(chain);
-    removeOptimization(chain);
-    modifyExternals(chain);
+  console.log('=======ctx===========', ctx)
+  if (ctx.platforms.has('h5')) {
+    ctx.modifyWebpackChain((args) => {
+      const chain = args.chain;
+      // console.log('=======before modify===========', chain.toConfig());
+      modifyEntry(chain);
+      // modifyMode(chain);
+      modifyOutput(chain)
+      modifyPerformance(chain)
+      modifyPlugins(chain);
+      removeResolve(chain);
+      modifyModule(chain);
+      removeOptimization(chain);
+      modifyExternals(chain);
+      console.log('=======after modify===========', chain.toConfig());
+    })
 
-
-
-    console.log('=======after modify===========', chain.toConfig());
-  })
+  }
 }
 
 function modifyEntry(chain) {
