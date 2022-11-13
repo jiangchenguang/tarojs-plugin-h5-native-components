@@ -1,27 +1,29 @@
 import { IPluginContext } from '@tarojs/service';
-// import { readConfig } from "@tarojs/helper";
+import { readConfig } from "@tarojs/helper";
 import rollup, {OutputOptions} from 'rollup';
 import jsx from 'rollup-plugin-jsx'
 import less from "rollup-plugin-less";
+import path from "path";
 
 const inputOptions = {
-  input: 'src/components/Button/index.tsx',
   external: id => /react|@tarojs/.test(id),
   plugins: [
-    jsx( {factory: 'React.createElement'} ),
     less({
       insert: true,
-      output: 'es/Button/index.css'
     }),
+    jsx( {factory: 'React.createElement'} ),
   ],
 };
 const outputOptions: OutputOptions = {
   dir: 'es',
-  format: 'esm'
+  format: 'esm',
 };
 
-async function build () {
-  const bundle = await rollup.rollup(inputOptions);
+const build = async (input) => {
+  const bundle = await rollup.rollup({
+    ...inputOptions,
+    input
+  });
 
   const { output } = await bundle.generate(outputOptions);
   console.log('=======output===========', output);
@@ -34,9 +36,17 @@ export default (ctx: IPluginContext) => {
     name: 'h5-native-component',
     useConfigName: 'h5',
     async fn({config}) {
-      console.log('=======dddd===========', __dirname, process.cwd());
-      // todo 如何才能调用tsc进行编译呢？tsc不能对一个特定的文件夹使用另外的tsconfig.json来编译，同时taro项目可能是使用ts编写的，那么我只能使用命令行参数的方式了？
-      // build();
+      // [ 'components/Button/index', 'components/KeyAreas/index' ]
+      const componentsList = readConfig(path.resolve(process.cwd(), 'src/app.config.ts')).components;
+      const input = {};
+      componentsList.forEach(comp => {
+        const folderList = comp.split('/');
+        const componentName = `${folderList[folderList.length - 2]}/index`;
+        input[componentName] = path.resolve('src/', `${componentsList[0]}.tsx`);
+      })
+      console.log('=======dddd===========', __dirname, process.cwd(), input);
+
+      build(input);
     }
   })
 }
