@@ -2,14 +2,26 @@ import { IPluginContext } from '@tarojs/service';
 import { readConfig } from "@tarojs/helper";
 import rollup, {OutputOptions} from 'rollup';
 import jsx from 'rollup-plugin-jsx'
-import less from "rollup-plugin-less";
+import postcss from "rollup-plugin-postcss";
+import pxToViewport from 'postcss-px-to-viewport';
 import path from "path";
 
 const inputOptions = {
   external: id => /react|@tarojs/.test(id),
   plugins: [
-    less({
-      insert: true,
+    postcss({
+      plugins: [
+        pxToViewport({
+          unitToConvert: 'px',
+          viewportWidth: 375,
+          propList: ['*'],
+          viewportUnit: 'vw',
+          minPixelVale: 1,
+          replace: true,
+          mediaQuery: false,
+          exclude: /node_modules/i
+        }),
+      ]
     }),
     jsx( {factory: 'React.createElement'} ),
   ],
@@ -19,7 +31,7 @@ const outputOptions: OutputOptions = {
   format: 'esm',
 };
 
-const build = async (input) => {
+async function build (input) {
   const bundle = await rollup.rollup({
     ...inputOptions,
     input
@@ -46,7 +58,7 @@ export default (ctx: IPluginContext) => {
       })
       console.log('=======dddd===========', __dirname, process.cwd(), input);
 
-      build(input);
+      await build(input);
     }
   })
 }
