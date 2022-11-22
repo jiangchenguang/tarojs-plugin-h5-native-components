@@ -1,6 +1,10 @@
 import { View } from '@tarojs/components/dist-h5/react';
 
-const Button = (props) => {
+interface IProps {
+  txt: string
+}
+
+const Button = (props: IProps) => {
   return <View>{props.txt}</View>
 }
 

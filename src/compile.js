@@ -1,42 +1,32 @@
-import rollup from 'rollup';
-import jsx from 'rollup-plugin-jsx'
-import postcss from "rollup-plugin-postcss";
-import pxToViewport from 'postcss-px-to-viewport';
-import exp from "constants";
+const rollup = require('rollup');
+const jsx = require('rollup-plugin-jsx');
+// const commonjs = require('@rollup/plugin-commonjs');
+const typescript = require('@rollup/plugin-typescript');
+// import pxToViewport from 'postcss-px-to-viewport';
 
 const inputOptions = {
   external: id => /react|@tarojs/.test(id),
   plugins: [
-    postcss({
-      plugins: [
-        pxToViewport({
-          unitToConvert: 'px',
-          viewportWidth: 375,
-          propList: ['*'],
-          viewportUnit: 'vw',
-          minPixelVale: 1,
-          replace: true,
-          mediaQuery: false,
-          exclude: /node_modules/i
-        }),
-      ]
-    }),
+    typescript(),
     jsx( {factory: 'React.createElement'} ),
   ],
 };
 const outputOptions = {
   dir: 'es',
-  format: 'esm',
+  format: 'es',
 };
 
 export const compileOneComponent = async (compName, compPath) => {
-  const bundle = await rollup.rollup({
-    ...inputOptions,
-    input: {compName: compPath}
-  });
-
-  const { output } = await bundle.generate(outputOptions);
-  return { bundle, output};
+  try {
+    const bundle = await rollup.rollup({
+      ...inputOptions,
+      input: {[compName]: compPath}
+    });
+    const { output } = await bundle.generate(outputOptions);
+    return { bundle, output};
+  } catch (e) {
+    console.log('=======err===========', e);
+  }
 }
 
 const compile = async (input) => {
