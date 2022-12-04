@@ -34,8 +34,9 @@ export const compileOneComponent = async (compPath, outputDir) => {
 }
 
 // 计算组件的输出目录
+// 通过组件在src中componentRootDir下的目录路径，拼接到dist/es下
 const calcOutputDir = (compPath, componentRootDir) => {
-  let dir = 'es';
+  const defaultOutput = 'dist/es';
   if (componentRootDir) {
     // 'component' => '/component/'
     if (componentRootDir[0] !== '/') { componentRootDir = `/${componentRootDir}`}
@@ -44,11 +45,12 @@ const calcOutputDir = (compPath, componentRootDir) => {
     const res = path.parse(compPath);
     const indexOf = res.dir.indexOf(componentRootDir);
     if (indexOf > -1) {
-      const parentDir = res.dir.slice(indexOf + componentRootDir.length);
-      dir = path.join('es', parentDir);
+      const parentDir = res.dir.slice(indexOf);
+      return path.join(defaultOutput, parentDir);
+    } else {
+      return defaultOutput;
     }
   }
-  return dir;
 }
 
 /**
