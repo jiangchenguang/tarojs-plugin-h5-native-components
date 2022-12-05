@@ -3,15 +3,27 @@ import compile, { compileOneComponent } from '../src/compile.js';
 
 
 describe('compileOneComponent', function() {
-  it('编译最简单的tsx组件', function() {
+  it('简单的tsx组件', function() {
     return new Promise( async (resolve, reject) => {
       await compile(path.resolve(__dirname, './component/simpleComponent/simpleComponent.tsx'), 'component');
       resolve();
     })
   });
-  it('编译最简单的jsx组件', function() {
+  it('简单的jsx组件', function() {
     return new Promise(async resolve => {
       await compile(path.resolve(__dirname, './component/simpleComponent-1/simpleComponent.jsx'), 'component');
+      resolve();
+    })
+  });
+  it('jsx组件可以引用js ts文件', function() {
+    return new Promise(async resolve => {
+      await compile(path.resolve(__dirname, './component/simpleComponent-2/simpleComponent.jsx'), 'component');
+      resolve();
+    })
+  });
+  it('tsx组件可以引用js ts文件', function() {
+    return new Promise(async resolve => {
+      await compile(path.resolve(__dirname, './component/simpleComponent-3/simpleComponent.tsx'), 'component');
       resolve();
     })
   });
