@@ -1,4 +1,4 @@
-import execRollup from "../src/rollup";
+import execRollup from "../../src/rollup";
 import { absCompPath, outputPath} from "./helper";
 
 
