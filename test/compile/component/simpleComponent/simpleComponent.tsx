@@ -1,3 +1,4 @@
+// todo 可以改为import { View } from '@tarojs/components'吗？
 import { View } from '@tarojs/components/dist-h5/react';
 
 interface IProps {
