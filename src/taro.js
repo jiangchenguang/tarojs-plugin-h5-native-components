@@ -20,7 +20,7 @@ export const configPathToAbsPath = (componentConfig) => {
   const fileExt = isUseTs(fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf8')) ? '.tsx' : '.jsx';
   const idx = componentConfig.lastIndexOf('/');
   if (idx > -1) {
-    fileName = componentConfig.slice(idx + 1) + fileExt;
+    fileName = componentConfig.slice(idx + '/'.length) + fileExt;
     filePath = componentConfig.slice(0, idx);
   } else {
     fileName = componentConfig + fileExt;
