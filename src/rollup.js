@@ -7,7 +7,8 @@ const typescript = require('@rollup/plugin-typescript');
 const inputOptions = {
   external: id => /react|@tarojs/.test(id),
   plugins: [
-    typescript(),
+    // todo 如果没启用ts，则不用引入此插件
+    typescript({ compilerOptions: {jsx: 'preserve'}}),
     jsx( {factory: 'React.createElement'} ),
   ],
 };
