@@ -2,6 +2,7 @@ const rollup = require('rollup');
 const jsx = require('rollup-plugin-jsx');
 // const commonjs = require('@rollup/plugin-commonjs');
 const typescript = require('@rollup/plugin-typescript');
+const postcss = require('rollup-plugin-postcss');
 // import pxToViewport from 'postcss-px-to-viewport';
 
 const inputOptions = {
@@ -9,12 +10,17 @@ const inputOptions = {
   plugins: [
     // todo 如果没启用ts，则不用引入此插件
     typescript({ compilerOptions: {jsx: 'preserve'}}),
+    postcss({
+      extract: true,
+      plugins: [],
+    }),
+    // todo jsx还不能放到postcss上面，会报错
     jsx( {factory: 'React.createElement'} ),
   ],
 };
 const outputOptions = {
   format: 'es',
-  preserveModules: true
+  preserveModules: true,
 };
 
 /**
