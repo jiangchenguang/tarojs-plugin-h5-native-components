@@ -31,7 +31,20 @@ describe('compileOneComponent', function() {
       resolve();
     })
   });
-  xit('可以编译css')
+  it('tsx文件可以引入css', function () {
+    return new Promise(async (resolve, reject) => {
+      const comp = './component/simple-component-with-css/simpleComponent.tsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+      resolve();
+    })
+  })
+  it('jsx文件可以引入css', function () {
+    return new Promise(async resolve => {
+      const comp = './component/simple-component-with-css-2/simpleComponent.jsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+      resolve();
+    })
+  })
   xit('可以编译less')
   xit('可以编译scss')
   it('编译带子组件的tsx组件', function() {
