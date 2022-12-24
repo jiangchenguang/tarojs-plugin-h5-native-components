@@ -52,7 +52,6 @@ describe('compileOneComponent', function() {
       resolve();
     })
   })
-  // todo 生成的样式文件包含了上面测试用例的样式，为什么呢？
   it('jsx文件可以引入less', function () {
     return new Promise(async resolve => {
       const comp = './component/simple-component-with-less-2/simpleComponent.jsx';

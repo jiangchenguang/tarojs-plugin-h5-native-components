@@ -5,7 +5,7 @@ const typescript = require('@rollup/plugin-typescript');
 const postcss = require('rollup-plugin-postcss');
 // import pxToViewport from 'postcss-px-to-viewport';
 
-const inputOptions = {
+const getInputOptions = () => ({
   external: id => /react|@tarojs/.test(id),
   plugins: [
     // todo 如果没启用ts，则不用引入此插件
@@ -17,7 +17,7 @@ const inputOptions = {
     // todo jsx还不能放到postcss上面，会报错
     jsx( {factory: 'React.createElement'} ),
   ],
-};
+})
 const outputOptions = {
   format: 'es',
   preserveModules: true,
@@ -30,9 +30,10 @@ const outputOptions = {
  * @returns {Promise<void>}
  */
 const execRollup = async (componentPath, outputDir) => {
-  const bundle = await rollup.rollup({...inputOptions, input: componentPath});
+  const bundle = await rollup.rollup({...getInputOptions(), input: componentPath});
   await bundle.generate({...outputOptions, dir: outputDir});
   await bundle.write({ ...outputOptions, dir: outputDir });
+  await bundle.close();
 }
 
 export default execRollup;
