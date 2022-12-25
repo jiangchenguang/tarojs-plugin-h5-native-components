@@ -1,78 +1,90 @@
 import execRollup from "../../src/rollup";
-import { absCompPath, outputPath} from "./helper";
+import { absCompPath, outputPath, asyncRunner} from "./helper";
 
 
 describe('compileOneComponent', function() {
   it('简单的tsx组件', function() {
-    return new Promise( async resolve => {
+    return asyncRunner( async () => {
       const comp = './component/simpleComponent/simpleComponent.tsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   it('简单的jsx组件', function() {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/simpleComponent-1/simpleComponent.jsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   it('jsx组件可以引用js ts文件', function() {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/simpleComponent-2/simpleComponent.jsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   it('tsx组件可以引用js ts文件', function() {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/simpleComponent-3/simpleComponent.tsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   it('tsx文件可以引入css', function () {
-    return new Promise(async (resolve, reject) => {
+    return asyncRunner(async () => {
       const comp = './component/simple-component-with-css/simpleComponent.tsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   })
   it('jsx文件可以引入css', function () {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/simple-component-with-css-2/simpleComponent.jsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   })
   it('tsx文件可以引入less', function () {
-    return new Promise(async (resolve, reject) => {
+    return asyncRunner(async () => {
       const comp = './component/simple-component-with-less/simpleComponent.tsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   })
   it('jsx文件可以引入less', function () {
-    return new Promise(async resolve => {
+    return new asyncRunner(async () => {
       const comp = './component/simple-component-with-less-2/simpleComponent.jsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   })
-  xit('可以编译less')
-  xit('可以编译scss')
+  it('tsx文件可以引入stylus', function () {
+    return asyncRunner(async () => {
+      const comp = './component/simple-component-with-stylus/simpleComponent.tsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+    })
+  })
+  it('jsx文件可以引入stylus', function () {
+    return asyncRunner(async () => {
+      const comp = './component/simple-component-with-stylus-2/simpleComponent.jsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+    })
+  })
+  it('tsx文件可以引入sass', function () {
+    return asyncRunner(async () => {
+      const comp = './component/simple-component-with-sass/simpleComponent.tsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+    })
+  })
+  it('jsx文件可以引入sass', function () {
+    return asyncRunner(async () => {
+      const comp = './component/simple-component-with-sass-2/simpleComponent.jsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+    })
+  })
   it('编译带子组件的tsx组件', function() {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/useChildComponent/useChildComponent.tsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   it('编译带子组件的jsx组件', function() {
-    return new Promise(async resolve => {
+    return asyncRunner(async () => {
       const comp = './component/useChildComponent-1/useChildComponent.jsx';
       await execRollup(absCompPath(comp), outputPath(comp));
-      resolve();
     })
   });
   xit('可以给子组件传递prop')
