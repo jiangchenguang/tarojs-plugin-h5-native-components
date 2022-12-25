@@ -59,8 +59,21 @@ describe('compileOneComponent', function() {
       resolve();
     })
   })
-  xit('可以编译less')
-  xit('可以编译scss')
+  xit('可以编译stylus')
+  it('tsx文件可以引入sass', function () {
+    return new Promise(async (resolve) => {
+      const comp = './component/simple-component-with-sass/simpleComponent.tsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+      resolve();
+    })
+  })
+  it('jsx文件可以引入sass', function () {
+    return new Promise(async (resolve) => {
+      const comp = './component/simple-component-with-sass-2/simpleComponent.jsx';
+      await execRollup(absCompPath(comp), outputPath(comp));
+      resolve();
+    })
+  })
   it('编译带子组件的tsx组件', function() {
     return new Promise(async resolve => {
       const comp = './component/useChildComponent/useChildComponent.tsx';
