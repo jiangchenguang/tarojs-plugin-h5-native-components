@@ -11,3 +11,14 @@ export const outputPath = compPath => {
     return 'dist/es'
   }
 }
+
+export const asyncRunner = (fn) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await fn();
+      resolve();
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
