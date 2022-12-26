@@ -5,11 +5,11 @@ const typescript = require('@rollup/plugin-typescript');
 const postcss = require('rollup-plugin-postcss');
 // import pxToViewport from 'postcss-px-to-viewport';
 
-const getInputOptions = () => ({
+const getInputOptions = (config) => ({
   external: id => /react|@tarojs/.test(id),
   plugins: [
     // todo 如果没启用ts，则不用引入此插件
-    typescript({ compilerOptions: {jsx: 'preserve'}}),
+    config.useTs && typescript({ compilerOptions: {jsx: 'preserve'}}),
     postcss({
       extract: true,
       plugins: [],
@@ -27,10 +27,11 @@ const outputOptions = {
  * 调用rollup编译
  * @param componentPath 组件的绝对路径
  * @param outputDir  输出目录
+ * @param config  编辑配置
  * @returns {Promise<void>}
  */
-const execRollup = async (componentPath, outputDir) => {
-  const bundle = await rollup.rollup({...getInputOptions(), input: componentPath});
+const execRollup = async (componentPath, outputDir, config) => {
+  const bundle = await rollup.rollup({...getInputOptions(config), input: componentPath});
   await bundle.generate({...outputOptions, dir: outputDir});
   await bundle.write({ ...outputOptions, dir: outputDir });
   await bundle.close();
