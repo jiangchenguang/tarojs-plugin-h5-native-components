@@ -1,5 +1,5 @@
 import { View } from '@tarojs/components/dist-h5/react';
-import SimpleComponent from "./simpleComponent";
+import SimpleComponent from "./simpleComponent.jsx";
 
 const Button = (props) => {
   return <View>

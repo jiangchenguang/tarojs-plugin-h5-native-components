@@ -1,5 +1,5 @@
 import path from "path";
-import { configPathToAbsPath, getFolders, readComponentsConfig } from "./taro";
+import { configPathToAbsPath, getFolders, readComponentsConfig, isUseTs } from "./taro";
 import execRollup from "./rollup";
 
 // 计算组件的输出目录
@@ -10,15 +10,16 @@ const calcOutputDir = (compPath) => {
   return path.join(defaultOutput, parentFolder);
 }
 
-const compileOneComp = async (configPath)  => {
+const compileOneComp = async (configPath, config)  => {
   const absPath = configPathToAbsPath(configPath);
   const outputDir = calcOutputDir(configPath);
-  await execRollup(absPath, outputDir);
+  await execRollup(absPath, outputDir, config);
 }
 
 const compile = async () => {
+  const config = {useTs: isUseTs()};
   for (const componentPath of readComponentsConfig()) {
-    await compileOneComp(componentPath)
+    await compileOneComp(componentPath, config)
   }
 }
 
